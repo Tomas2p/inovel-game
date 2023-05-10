@@ -1,4 +1,7 @@
 Título de la Historia
-Escena 1: Introducción | Opción 1 | Opción 2
-Escena 2: Desarrollo de la trama | Opción A | Opción B | Opción C
-Escena 3: Conclusión | Opción X | Opción Y | Opción Z
+
+E1:Texto escena 1
++Opción 1
+-Opción 2
+
+E2:Final de la historia
