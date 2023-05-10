@@ -29,20 +29,17 @@ void Story::loadStory(const std::string& filename) {
     // Ignora las líneas vacías y los comentarios
     if (line.empty() || line[0] == '#') {
       continue;
-    }
 
-    // Si es la primera línea, es el título de la historia
-    if (isFirstLine) {
+      // Si es la primera línea, es el título de la historia
+    } else if (isFirstLine) {
       title = line;
       isFirstLine = false;
       continue;
-    }
 
-    // Si comienza con E, es el inicio de una nueva escena
-    if (line[0] == 'E') {
+      // Si comienza con E, es el inicio de una nueva escena
+    } else if (line[0] == 'E') {
       // Extrae el identificador de la escena
       int id = stoi(line.substr(1, line.find(':') - 1));
-
       // Crea la nueva escena y la agrega al vector
       Scene newScene;
       newScene.id = id;
@@ -50,28 +47,25 @@ void Story::loadStory(const std::string& filename) {
       currentSceneIndex = scenes.size();
       scenes.push_back(newScene);
       continue;
-    }
 
-    // Si comienza con "+", es una opción correcta
-    if (line[0] == '+') {
+      // Si comienza con "+", es una opción correcta
+    } else if (line[0] == '+') {
       Option newOption;
       newOption.text = line.substr(1);
       newOption.nextScene = -1;  // Se asignará el valor correcto más adelante
       scenes[currentSceneIndex].options.push_back(newOption);
       continue;
-    }
 
-    // Si comienza con "-", es una opción incorrecta
-    if (line[0] == '-') {
+      // Si comienza con "-", es una opción incorrecta
+    } else if (line[0] == '-') {
       Option newOption;
       newOption.text = line.substr(1);
       newOption.nextScene = -1;  // Se asignará el valor correcto más adelante
       scenes[currentSceneIndex].options.push_back(newOption);
       continue;
-    }
 
-    // Si comienza con "=", es el final de la historia
-    if (line[0] == '=') {
+      // Si comienza con "=", es el final de la historia
+    } else {
       scenes[currentSceneIndex].options.back().nextScene = -1;
       continue;
     }
@@ -84,10 +78,10 @@ void Story::displayScene(const Scene& scene) {
   clearScreen();
 
   // Imprime Escena id y la descripción
-  for (int i{1}; i < 25 + title.length(); ++i) std::cout << '-';
+  for (int i{1}; i < int(25 + title.length()); ++i) std::cout << '-';
   std::cout << '\n';
   std::cout << " ---   " << title << " : Escena " << scene.id << "   ---\n";
-  for (int i{1}; i < 25 + title.length(); ++i) std::cout << '-';
+  for (int i{1}; i < int(25 + title.length()); ++i) std::cout << '-';
   std::cout << "\n\n";
   std::cout << scene.intro << std::endl;
 
@@ -111,7 +105,7 @@ void Story::run() {
   int currentScene = 0;
   clearScreen();
 
-  while (currentScene >= 0 && currentScene < scenes.size()) {
+  while (currentScene >= 0 && currentScene < int(scenes.size())) {
     // Imprime las escenas
     displayScene(scenes[currentScene]);
 
@@ -122,9 +116,8 @@ void Story::run() {
     int nextScene{scenes[currentScene].options[choice - 1].nextScene};
 
     // Busca la siguiente escena por su identificador
-    auto it =
-        find_if(scenes.begin(), scenes.end(),
-                [nextScene](const Scene& s) { return s.id == nextScene; });
+    auto it{find_if(scenes.begin(), scenes.end(),
+                    [nextScene](const Scene& s) { return s.id == nextScene; })};
 
     if (it != scenes.end()) {
       // Calcula el índice de la siguiente escena
