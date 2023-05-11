@@ -1,5 +1,5 @@
 CC = g++
-CXXFLAGS = -std=c++17 -o 
+CXXFLAGS = -std=c++17 -Wall -o 
 OBJ0 = story
 OBJ1 = main
 
