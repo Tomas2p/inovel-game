@@ -1,4 +1,6 @@
-#pragma once
+#ifndef STORY_HPP
+#define STORY_HPP
+
 #include <string>
 #include <vector>
 
@@ -16,6 +18,8 @@ class Story {
   void displayScene(const Scene& scene);
   int getPlayerChoice(int maxOptions);
 
-  std::string title;
+  std::string title, end_title;
   std::vector<Scene> scenes;
 };
+
+#endif

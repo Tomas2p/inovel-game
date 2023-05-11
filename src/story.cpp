@@ -22,52 +22,51 @@ void Story::loadStory(const std::string& filename) {
   }
 
   std::string line;
-  bool isFirstLine{true};
   int currentSceneIndex{-1};
 
   while (std::getline(file, line)) {
-    // Ignora las líneas vacías y los comentarios
-    if (line.empty() || line[0] == '#') {
-      continue;
+    switch (line[0]) {
+      case 'T':  // Comienza con T, es el título de la historia
+        title = line.substr(line.find(':') + 1);
+        continue;
 
-      // Si es la primera línea, es el título de la historia
-    } else if (isFirstLine) {
-      title = line;
-      isFirstLine = false;
-      continue;
+      case 'E': {  // Comienza con E, es una nueva escena
+        // Extrae el identificador de la escena
+        int id = stoi(line.substr(1, line.find(':') - 1));
+        // Crea la nueva escena y la agrega al vector
+        Scene newScene;
+        newScene.id = id;
+        newScene.intro = line.substr(line.find(':') + 1, line.find('|'));
+        currentSceneIndex = scenes.size();
+        scenes.push_back(newScene);
+        continue;
+      }
 
-      // Si comienza con E, es el inicio de una nueva escena
-    } else if (line[0] == 'E') {
-      // Extrae el identificador de la escena
-      int id = stoi(line.substr(1, line.find(':') - 1));
-      // Crea la nueva escena y la agrega al vector
-      Scene newScene;
-      newScene.id = id;
-      newScene.intro = line.substr(line.find(':') + 1, line.find('|'));
-      currentSceneIndex = scenes.size();
-      scenes.push_back(newScene);
-      continue;
+      case '+': {  // Comienza con "+", es una opción correcta
+        Option newOption;
+        newOption.text = line.substr(1);
+        // Se asignará el valor de la siguiente escena
+        newOption.nextScene = scenes.size() + 1;
+        scenes[currentSceneIndex].options.push_back(newOption);
+        continue;
+      }
 
-      // Si comienza con "+", es una opción correcta
-    } else if (line[0] == '+') {
-      Option newOption;
-      newOption.text = line.substr(1);
-      newOption.nextScene = -1;  // Se asignará el valor correcto más adelante
-      scenes[currentSceneIndex].options.push_back(newOption);
-      continue;
+      case '-': {  // Comienza con "-", es una opción incorrecta
+        Option newOption;
+        newOption.text = line.substr(1);
+        // Se asignará el valor -1 de fin
+        newOption.nextScene = -1;
+        scenes[currentSceneIndex].options.push_back(newOption);
+        continue;
+      }
 
-      // Si comienza con "-", es una opción incorrecta
-    } else if (line[0] == '-') {
-      Option newOption;
-      newOption.text = line.substr(1);
-      newOption.nextScene = -1;  // Se asignará el valor correcto más adelante
-      scenes[currentSceneIndex].options.push_back(newOption);
-      continue;
+      case 'F':  // Comienza con "F", es el final de la historia
+        end_title = line.substr(line.find(':') + 1);
+        scenes[currentSceneIndex].options.back().nextScene = -1;
+        continue;
 
-      // Si comienza con "=", es el final de la historia
-    } else {
-      scenes[currentSceneIndex].options.back().nextScene = -1;
-      continue;
+      default:  // Ignora las líneas vacías, los comentarios y el resto
+        continue;
     }
   }
   file.close();
@@ -129,9 +128,6 @@ void Story::run() {
   }
   // Muestra el mensaje de finalización
   clearScreen();
-  std::cout << ">> Fin de la historia <<\n";
-  std::cout << "Presiona Enter para continuar...";
-  std::cin.ignore();
-  std::cin.get();
-  clearScreen();
+  std::cout << end_title << "\n\n";
+  pressEnter();
 }

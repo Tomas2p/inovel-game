@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SCENE_HPP
+#define SCENE_HPP
+
 #include <string>
 #include <vector>
 #include "option.hpp"
@@ -9,3 +11,5 @@ struct Scene {
     std::string intro;
     std::vector<Option> options;
 };
+
+#endif

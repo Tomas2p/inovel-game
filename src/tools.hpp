@@ -1,5 +1,7 @@
-#pragma once
+#ifndef TOOLS_HPP
+#define TOOLS_HPP
 // Funciones adicionales
+
 #include <iostream>
 #include <string>
 
@@ -18,3 +20,5 @@ void pressEnter() {
   std::cin.ignore(), std::cin.get();
   clearScreen();
 }
+
+#endif
