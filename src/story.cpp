@@ -5,6 +5,7 @@
 #include <cstdlib>  // Para el comando clear
 #include <fstream>
 #include <iostream>
+#include <random>
 #include <sstream>
 
 #include "tools.hpp"
@@ -15,6 +16,9 @@ Story::Story(const std::string& filename) { loadStory(filename); }
 // Carga la historia desde el archivo dado
 void Story::loadStory(const std::string& filename) {
   std::ifstream file(filename);
+  int sceneIDCount{1};
+  // Carácter por el que filtar en los txt
+  const char kCHARTOFILTER{'.'};
 
   if (!file.is_open()) {
     std::cerr << "Error al abrir el archivo " << filename << ".\n";
@@ -26,42 +30,43 @@ void Story::loadStory(const std::string& filename) {
 
   while (std::getline(file, line)) {
     switch (line[0]) {
-      case 'T':  // Comienza con T, es el título de la historia
-        title = line.substr(line.find(':') + 1);
+      case 'T':  // Comienza con 'T', es el título de la historia
+        title = line.substr(line.find(kCHARTOFILTER) + 1);
         continue;
 
-      case 'E': {  // Comienza con E, es una nueva escena
+      case 'E': {  // Comienza con 'E', es una nueva escena
         // Extrae el identificador de la escena
-        int id = stoi(line.substr(1, line.find(':') - 1));
+        int id{sceneIDCount};
+        ++sceneIDCount;
         // Crea la nueva escena y la agrega al vector
         Scene newScene;
         newScene.id = id;
-        newScene.intro = line.substr(line.find(':') + 1, line.find('|'));
+        newScene.intro = line.substr(line.find(kCHARTOFILTER) + 1);
         currentSceneIndex = scenes.size();
         scenes.push_back(newScene);
         continue;
       }
 
-      case '+': {  // Comienza con "+", es una opción correcta
+      case '+': {  // Opciones '+' correcta
         Option newOption;
-        newOption.text = line.substr(1);
-        // Se asignará el valor de la siguiente escena
+        newOption.text = line.substr(line.find(kCHARTOFILTER) + 1);
+        // Valor de la siguiente escena si es '+'
         newOption.nextScene = scenes.size() + 1;
         scenes[currentSceneIndex].options.push_back(newOption);
         continue;
       }
 
-      case '-': {  // Comienza con "-", es una opción incorrecta
+      case '-': {  // Opcion '-' incorrecta
         Option newOption;
-        newOption.text = line.substr(1);
-        // Se asignará el valor -1 de fin
+        newOption.text = line.substr(line.find(kCHARTOFILTER) + 1);
+        // Valor de la escena anterior si es '-'
         newOption.nextScene = scenes.size() - 1;
         scenes[currentSceneIndex].options.push_back(newOption);
         continue;
       }
 
-      case 'F':  // Comienza con "F", es el final de la historia
-        end_title = line.substr(line.find(':') + 1);
+      case 'F':  // Comienza con 'F', es el final de la historia
+        end_title = line.substr(line.find(kCHARTOFILTER) + 1);
         scenes[currentSceneIndex].options.back().nextScene = -1;
         continue;
 
@@ -72,22 +77,27 @@ void Story::loadStory(const std::string& filename) {
   file.close();
 }
 
-// Muestra la escena y opciones
-void Story::displayScene(const Scene& scene) {
-  clearScreen();
+// Mezcla el vector dado
+auto vectorShuffle(std::vector<Option>& vector) {
+  std::random_device rd;
+  std::mt19937 g(rd());
+  std::shuffle(vector.begin(), vector.end(), g);
+}
 
-  // Imprime Escena id y la descripción
-  for (int i{1}; i < int(25 + title.length()); ++i) std::cout << '-';
-  std::cout << '\n';
-  std::cout << " ---   " << title << " : Escena " << scene.id << "   ---\n";
-  for (int i{1}; i < int(25 + title.length()); ++i) std::cout << '-';
-  std::cout << "\n\n";
-  std::cout << scene.intro << std::endl;
-
-  // Imprime las opciones
+// Imprime las opciones
+void Story::displayOptions(const Scene& scene) {
   for (size_t i{0}; i < scene.options.size(); ++i) {
-    std::cout << " [" << i + 1 << "] - " << scene.options[i].text << std::endl;
+    std::cout << " [" << i + 1 << "] - " << scene.options[i].text << '\n';
   }
+}
+
+// Muestra la escena y opciones
+void Story::displayScene(const Scene& scene, const int& kLastScene) {
+  clearScreen();
+  // Imprime Escena id y la descripción
+  std::cout << "* " << title << " : Escena [" << scene.id << "-"
+            << kLastScene << "] *\n\n";
+  std::cout << scene.intro << "\n\n";
 }
 
 // Para saber que opcion elige el jugador
@@ -95,40 +105,41 @@ int Story::getPlayerChoice(int maxOptions) {
   int playerChoice;
   std::cout << "\nElige una opción [1-" << maxOptions << "] >>> ";
   std::cin >> playerChoice;
-
-  return playerChoice;
+  return playerChoice - 1;
 }
 
 // Toda la ejecucion del programa
 void Story::run() {
-  int currentScene = 0;
+  int currentScene{0}, kScenesCount{int(scenes.size())};
   clearScreen();
-  std::cout << scenes.size();
-
-  while (currentScene >= 0 && currentScene < int(scenes.size())) {
+  while (currentScene >= 0 && currentScene < kScenesCount) {
     // Imprime las escenas
-    displayScene(scenes[currentScene]);
+    displayScene(scenes[currentScene], kScenesCount);
 
-    // Imprime las opciones y las asigna a choice
+    // Mezcla las opciones de las escenas
+    vectorShuffle(scenes[currentScene].options);
+
+    // Imprime las opciones de las escenas
+    displayOptions(scenes[currentScene]);
+
+    // Asigna e choice la opción elegida por el jugador
     int choice{getPlayerChoice(scenes[currentScene].options.size())};
 
     // Asigna a nextScene la siguiente escena
-    int nextScene{scenes[currentScene].options[choice - 1].nextScene};
+    int nextScene{scenes[currentScene].options[choice].nextScene};
 
     // Busca la siguiente escena por su identificador
     auto it{find_if(scenes.begin(), scenes.end(),
                     [nextScene](const Scene& s) { return s.id == nextScene; })};
 
-    if (it != scenes.end()) {
-      // Calcula el índice de la siguiente escena
+    if (it != scenes.end()) {  // Calcula el índice de la siguiente escena
       currentScene = distance(scenes.begin(), it);
-    } else {
-      // Final de la historia
+    } else {  // Final de la historia
       currentScene = -1;
     }
   }
-  // Muestra el mensaje de finalización
   clearScreen();
+  // Muestra el mensaje de finalización
   std::cout << end_title << "\n\n";
   pressEnter();
 }

@@ -12,6 +12,7 @@ int main(int argc, char* argv[]) {
 #else
   system("clear");
 #endif
+  std::cout << "* INovel++ interactive novel *\n\n";
 
   std::string historiasDir{argv[1]};
   std::vector<std::string> historiasDisponibles;
@@ -24,7 +25,8 @@ int main(int argc, char* argv[]) {
   }
 
   // Mostrar las historias disponibles al usuario
-  std::cout << "Historias disponibles en " << historiasDir << "/:\n";
+  std::cout << "Hay " << historiasDisponibles.size()
+            << " historias disponibles en " << historiasDir << "/:\n\n";
   for (size_t i = 0; i < historiasDisponibles.size(); ++i) {
     std::cout << " [" << i + 1 << "] - " << historiasDisponibles[i]
               << std::endl;

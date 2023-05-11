@@ -10,12 +10,19 @@
 // Clase para gestionar la historia
 class Story {
  public:
+  // Constructor
   Story(const std::string& filename);
+  // Función principal
   void run();
 
  private:
+  // Cargar la historia
   void loadStory(const std::string& filename);
-  void displayScene(const Scene& scene);
+  // Mostrar la escena
+  void displayScene(const Scene& scene, const int& kLastScene);
+  // Imprime las opciones
+  void displayOptions(const Scene& scene);
+  // Obtener la opción del jugador
   int getPlayerChoice(int maxOptions);
 
   std::string title, end_title;

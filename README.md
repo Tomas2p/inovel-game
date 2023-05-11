@@ -13,19 +13,18 @@ Requisitos: `make` y `g++`
 ## Ejemplo de ejecución
 
     $ ./story stories
+    * INovel++ novela interactiva *
+
+    Hay 1 historias disponibles en stories/:
     
-    Historias disponibles en stories/:
-     [1] - history_template
-     [2] - tesoro_perdido
-     [3] - carga_el_movil
+     [1] - story_template
 
     Seleccione la historia a jugar >>> 1
     
-    ----------------------------------------------
-     ---   Título de la Historia : Escena 1   ---
-    ----------------------------------------------
+    * Título de la Historia : Escena [1-1] *
 
     Texto escena 1
+    
      [1] - Opción 1
      [2] - Opción 2
 
@@ -39,13 +38,13 @@ Requisitos: `make` y `g++`
 
 Con el objetivo en mente de que las historias puedan ser creadas por otros usuarios les ofrezco la plantilla que se encuentra en stories/story_template.txt
 
-    T:Título de la Historia
+    T.Título de la Historia
 
-    E1:Texto escena 1
-    +Opción 1
-    -Opción 2
+    E.Texto escena 1
+    +.Opción 1
+    -.Opción 2
 
-    F:Final de la historia
+    F.Final de la historia
 
 Donde las cosas funcionan de la siguiente manera:
 
@@ -57,4 +56,4 @@ Donde las cosas funcionan de la siguiente manera:
 |      -      |   Opción incorrecta   |
 |      F      | Final de la historia  |
 
-Recalcar que los comentarios con # o en general cualquier otro caracter que empieze la linea es ignorado.
+Cualquier otro caracter que empieze la linea es ignorado, los '.' sirven para separar el texto de las abreviaturas.

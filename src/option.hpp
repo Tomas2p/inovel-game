@@ -6,7 +6,6 @@
 // Struct para las opciones de la escena
 struct Option {
   std::string text;
-  bool value;
   int nextScene;
 };
 
