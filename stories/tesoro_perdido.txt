@@ -1,23 +1,23 @@
-T:El Tesoro Perdido
+T.El Tesoro Perdido
 
-E1:Te encuentras en una antigua cueva oscura.
-+Explorar la cueva en busca de pistas.
--Regresar a la entrada de la cueva.
+E.Te encuentras en una antigua cueva oscura.
++2.Explorar la cueva en busca de pistas.
+-.Regresar a la entrada de la cueva.
 
-E2:Descubres una antigua inscripción en la pared.
-+Decodificar la inscripción y seguir las indicaciones.
--Investigar otra área de la cueva.
+E.Descubres una antigua inscripción en la pared.
++.Decodificar la inscripción y seguir las indicaciones.
+-.Investigar otra área de la cueva.
 
-E3:Siguiendo las indicaciones, llegas a una sala llena de trampas mortales.
-+Desactivar las trampas con cuidado.
--Evitar las trampas y continuar sin tocar nada.
+E.Siguiendo las indicaciones, llegas a una sala llena de trampas mortales.
++.Desactivar las trampas con cuidado.
+-.Evitar las trampas y continuar sin tocar nada.
 
-E4:Superas las trampas y encuentras una gran puerta de piedra.
-+Abrir la puerta utilizando el medallón mágico.
--Buscar otra forma de abrir la puerta.
+E.Superas las trampas y encuentras una gran puerta de piedra.
++.Abrir la puerta utilizando el medallón mágico.
+-.Buscar otra forma de abrir la puerta.
 
-E5:La puerta se abre y revela un tesoro brillante en su interior.
-+Tomar el tesoro y salir de la cueva victorioso.
--Dejar el tesoro y explorar más a fondo la cueva.
+E.La puerta se abre y revela un tesoro brillante en su interior.
++.Tomar el tesoro y salir de la cueva victorioso.
+-.Dejar el tesoro y explorar más a fondo la cueva.
 
-F:Has terminado tu búsqueda del Tesoro Perdido. ¡Espero que hayas disfrutado!
+F.Has terminado tu búsqueda del Tesoro Perdido. ¡Espero que hayas disfrutado!

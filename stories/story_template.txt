@@ -1,7 +1,9 @@
-T:Título de la Historia
+T.Título de la Historia
 
-E1:Texto escena 1
-+Opción 1
--Opción 2
+E.Texto escena 1
++.Avanza 1 escena
++2.Avanza 2 escenas
+-.Retrocede 1 escena
+-2.Retrocede 2 escenas
 
-F:Final de la historia
+F.Final de la historia

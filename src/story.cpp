@@ -18,7 +18,7 @@ void Story::loadStory(const std::string& filename) {
   std::ifstream file(filename);
   int sceneIDCount{1};
   // Carácter por el que filtar en los txt
-  const char kCHARTOFILTER{'.'};
+  const char kCharToFilter{'.'};
 
   if (!file.is_open()) {
     std::cerr << "Error al abrir el archivo " << filename << ".\n";
@@ -31,7 +31,7 @@ void Story::loadStory(const std::string& filename) {
   while (std::getline(file, line)) {
     switch (line[0]) {
       case 'T':  // Comienza con 'T', es el título de la historia
-        title = line.substr(line.find(kCHARTOFILTER) + 1);
+        title = line.substr(line.find(kCharToFilter) + 1);
         continue;
 
       case 'E': {  // Comienza con 'E', es una nueva escena
@@ -41,7 +41,7 @@ void Story::loadStory(const std::string& filename) {
         // Crea la nueva escena y la agrega al vector
         Scene newScene;
         newScene.id = id;
-        newScene.intro = line.substr(line.find(kCHARTOFILTER) + 1);
+        newScene.intro = line.substr(line.find(kCharToFilter) + 1);
         currentSceneIndex = scenes.size();
         scenes.push_back(newScene);
         continue;
@@ -49,24 +49,38 @@ void Story::loadStory(const std::string& filename) {
 
       case '+': {  // Opciones '+' correcta
         Option newOption;
-        newOption.text = line.substr(line.find(kCHARTOFILTER) + 1);
-        // Valor de la siguiente escena si es '+'
-        newOption.nextScene = scenes.size() + 1;
+        newOption.text = line.substr(line.find(kCharToFilter) + 1);
+        // Valor de la siguiente escena es  tamaño scenes + line[1]
+        if (line[1] != '.') {
+          newOption.nextScene =
+              std::stoi(line.substr(0, line.find(kCharToFilter))) +
+              scenes.size();
+          // Valor de siguiente escena es tamaño scenes + 1
+        } else {
+          newOption.nextScene = int(scenes.size() + 1);
+        }
         scenes[currentSceneIndex].options.push_back(newOption);
         continue;
       }
 
       case '-': {  // Opcion '-' incorrecta
         Option newOption;
-        newOption.text = line.substr(line.find(kCHARTOFILTER) + 1);
-        // Valor de la escena anterior si es '-'
-        newOption.nextScene = scenes.size() - 1;
+        newOption.text = line.substr(line.find(kCharToFilter) + 1);
+        // Valor de la siguiente escena es  tamaño scenes + line[1]
+        if (line[1] != '.') {
+          newOption.nextScene =
+              std::stoi(line.substr(0, line.find(kCharToFilter))) +
+              scenes.size();
+          // Valor de siguiente escena es tamaño scenes - 1
+        } else {
+          newOption.nextScene = int(scenes.size() - 1);
+        }
         scenes[currentSceneIndex].options.push_back(newOption);
         continue;
       }
 
       case 'F':  // Comienza con 'F', es el final de la historia
-        end_title = line.substr(line.find(kCHARTOFILTER) + 1);
+        end_title = line.substr(line.find(kCharToFilter) + 1);
         scenes[currentSceneIndex].options.back().nextScene = -1;
         continue;
 
@@ -95,8 +109,8 @@ void Story::displayOptions(const Scene& scene) {
 void Story::displayScene(const Scene& scene, const int& kLastScene) {
   clearScreen();
   // Imprime Escena id y la descripción
-  std::cout << "* " << title << " : Escena [" << scene.id << "-"
-            << kLastScene << "] *\n\n";
+  std::cout << "* " << title << " : Escena [" << scene.id << "-" << kLastScene
+            << "] *\n\n";
   std::cout << scene.intro << "\n\n";
 }
 

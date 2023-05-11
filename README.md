@@ -21,16 +21,16 @@ Requisitos: `make` y `g++`
 
     Seleccione la historia a jugar >>> 1
     
-    * Título de la Historia : Escena [1-1] *
+    * La Carga del Móvil : Escena [1-3] *
 
-    Texto escena 1
+    Necesitas cargar el móvil con el cargador.
     
-     [1] - Opción 1
-     [2] - Opción 2
+     [1] - Coger el cargador de tu cuarto.
+     [2] - Jugar al minecraft.
 
     Elige una opción [1-2] >>> 1
 
-    Final de la historia
+    Gracias a alguien tu móvil no ha explotado o si.
 
     Presiona Enter para continuar...
 
@@ -41,8 +41,10 @@ Con el objetivo en mente de que las historias puedan ser creadas por otros usuar
     T.Título de la Historia
 
     E.Texto escena 1
-    +.Opción 1
-    -.Opción 2
+    +.Avanza 1 escena
+    -.Retrocede 1 escena
+    +2.Avanza 2 escenas
+    -2.Retrocede 2 escenas
 
     F.Final de la historia
 
@@ -52,8 +54,10 @@ Donde las cosas funcionan de la siguiente manera:
 | :---------: | :-------------------: |
 |      T      | Título de la historia |
 |      E      |        Escena         |
-|      +      |    Opción correcta    |
-|      -      |   Opción incorrecta   |
+|      +      |    Avanza 1 escena    |
+|     +n      |   Avanza n escenas    |
+|      -      |  Retrocede 1 escena   |
+|     -n      |  Retrocede n escenas  |
 |      F      | Final de la historia  |
 
 Cualquier otro caracter que empieze la linea es ignorado, los '.' sirven para separar el texto de las abreviaturas.

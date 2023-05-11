@@ -1,15 +1,15 @@
-T:La Carga del Móvil
+T.La Carga del Móvil
 
-E1:Necesitas cargar el móvil con el cargador
-+Coger el cargador de tu cuarto
--Jugar al minecraft
+E.Necesitas cargar el móvil con el cargador.
++.Coger el cargador de tu cuarto.
+-.Jugar al minecraft.
 
-E2:Conecta el móvil y el cargador
-+Conectar el cargador al móvil
--Enchufar el móvil a la pared del salón
+E.Conecta el móvil y el cargador.
++.Conectar el cargador al móvil.
+-.Conectar el móvil a un reactor nuclear.
 
-E3:¡El móvil se está cargando!
-+Observar el porcentaje de carga
--Desconectar el cargador y apagar el móvil
+E.¡El móvil se está cargando!
++.Observar el porcentaje de carga.
+-.Desconectar el móvil y comerte unos nuggets.
 
-F:Fin de la historia
+F.Gracias a alguien tu móvil no ha explotado o si.
