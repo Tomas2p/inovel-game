@@ -55,7 +55,7 @@ void Story::loadStory(const std::string& filename) {
         Option newOption;
         newOption.text = line.substr(1);
         // Se asignará el valor -1 de fin
-        newOption.nextScene = -1;
+        newOption.nextScene = scenes.size() - 1;
         scenes[currentSceneIndex].options.push_back(newOption);
         continue;
       }
@@ -103,6 +103,7 @@ int Story::getPlayerChoice(int maxOptions) {
 void Story::run() {
   int currentScene = 0;
   clearScreen();
+  std::cout << scenes.size();
 
   while (currentScene >= 0 && currentScene < int(scenes.size())) {
     // Imprime las escenas

@@ -5,8 +5,15 @@
 
 #include "story.hpp"
 
-int main() {
-  std::string historiasDir = "histories";
+int main(int argc, char* argv[]) {
+  // Limpia la pantalla
+#ifdef _WIN32
+  system("cls");
+#else
+  system("clear");
+#endif
+
+  std::string historiasDir{argv[1]};
   std::vector<std::string> historiasDisponibles;
 
   // Obtener todas las historias disponibles en la carpeta
@@ -17,7 +24,7 @@ int main() {
   }
 
   // Mostrar las historias disponibles al usuario
-  std::cout << "Historias disponibles:\n";
+  std::cout << "Historias disponibles en " << historiasDir << "/:\n";
   for (size_t i = 0; i < historiasDisponibles.size(); ++i) {
     std::cout << " [" << i + 1 << "] - " << historiasDisponibles[i]
               << std::endl;
@@ -25,8 +32,7 @@ int main() {
 
   // Solicitar al usuario que elija una historia
   int opcion;
-  std::cout << "Seleccione la historia a jugar (ingrese el número "
-               "correspondiente) >>> ";
+  std::cout << "\nSeleccione la historia a jugar >>> ";
   std::cin >> opcion;
 
   // Verificar la opción seleccionada
