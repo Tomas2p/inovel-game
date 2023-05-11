@@ -1,16 +1,14 @@
 # INovel++ - Juego de novela interactivo por terminal en C++
 
-Juego de novela interactiva por terminal implementado en C++ y haciendo uso de .txt para la creación de historias.
+Juego de novela interactiva por terminal implementado en C++ y haciendo uso de txt para la creación de historias.
 
 ## Constructor
 
-Requisitos: 'make' y 'g++'
+Requisitos: `make` y `g++`
 
     $ make
     rm -f story
     g++ -std=c++17 -Wall -o  story src/story.cpp src/main.cpp
-
-Juego de novela interactiva por terminal en C++ y con txt para las historias
 
 ## Ejemplo de ejecución
 
@@ -51,12 +49,12 @@ Con el objetivo en mente de que las historias puedan ser creadas por otros usuar
 
 Donde las cosas funcionan de la siguiente manera:
 
-| Atajo |      Explicación      |
-| :---: | :-------------------: |
-|   T   | Título de la historia |
-|   E   |        Escena         |
-|   +   |    Opción correcta    |
-|   -   |   Opción incorrecta   |
-|   F   | Final de la historia  |
+| Abreviatura |      Explicación      |
+| :---------: | :-------------------: |
+|      T      | Título de la historia |
+|      E      |        Escena         |
+|      +      |    Opción correcta    |
+|      -      |   Opción incorrecta   |
+|      F      | Final de la historia  |
 
 Recalcar que los comentarios con # o en general cualquier otro caracter que empieze la linea es ignorado.
