@@ -23,6 +23,8 @@ Requisitos: `make` y `g++`
     
     * La Carga del Móvil : Escena [1-3] *
 
+    drgybmcw
+
     Necesitas cargar el móvil con el cargador.
     
      [1] - Coger el cargador de tu cuarto.
@@ -41,6 +43,7 @@ Con el objetivo en mente de que las historias puedan ser creadas por otros usuar
     T.Título de la Historia
 
     E.Texto escena 1
+    A.drgybmcw
     +.Avanza 1 escena
     -.Retrocede 1 escena
     +2.Avanza 2 escenas
@@ -54,6 +57,7 @@ Donde las cosas funcionan de la siguiente manera:
 | :---------: | :-------------------: |
 |      T      | Título de la historia |
 |      E      |        Escena         |
+|      A      |       PixelArt        |
 |      +      |    Avanza 1 escena    |
 |     +n      |   Avanza n escenas    |
 |      -      |  Retrocede 1 escena   |
@@ -61,3 +65,38 @@ Donde las cosas funcionan de la siguiente manera:
 |      F      | Final de la historia  |
 
 Cualquier otro caracter que empieze la linea es ignorado, los '.' sirven para separar el texto de las abreviaturas.
+
+### PixelArt
+
+Para el pixelart comentado anteriormente con la opción 'A' tienes diponibles los siguientes colores en formato ANSI, si no los puedes ver quizás esa terminal no sea compatible.
+
+| Abreviatura |      Color       |
+| :---------: | :--------------: |
+|      d      | negro/dark/black |
+|      r      |     rojo/red     |
+|      g      |   verde/green    |
+|      y      | amarillo/yellow  |
+|      b      |    azul/blue     |
+|      m      |  magenta/purple  |
+|      c      |       cyan       |
+|      w      |   blanco/white   |
+
+### Ejecución con pixelart
+
+En el ejecutable se sustituye cada letra del pixelart por este carácter '█' y el color que representa la letra asignada.
+
+    * La Carga del Móvil : Escena [1-3] *
+
+    wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+    ww                                 ww
+    ww    ccc                          ww
+    ww   cccccr       ggg             yww
+    ww    c c         www        wwwwwwww
+    wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+
+    Necesitas cargar el móvil con el cargador.
+
+    [1] - Coger el cargador.
+    [2] - Jugar al minecraft.
+
+    Elige una opción [1-2] >>> 

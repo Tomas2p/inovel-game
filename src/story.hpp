@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "option.hpp"
+// #include "pixelart.hpp"
 #include "scene.hpp"
 
 // Clase para gestionar la historia
@@ -24,8 +25,12 @@ class Story {
   void displayOptions(const Scene& scene);
   // Obtener la opción del jugador
   int getPlayerChoice(int maxOptions);
+  // Imprime el pixel art con los colores asignados
+  void displayPixelArt(const Scene& scene);
 
-  std::string title, end_title;
+  // Título y título final
+  std::string title, endTitle;
+  // Vector de escenas
   std::vector<Scene> scenes;
 };
 

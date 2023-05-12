@@ -1,6 +1,7 @@
 T.Título de la Historia
 
 E.Texto escena 1
+A.drgybmcw
 +.Avanza 1 escena
 +2.Avanza 2 escenas
 -.Retrocede 1 escena

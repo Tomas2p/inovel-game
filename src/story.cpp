@@ -5,10 +5,17 @@
 #include <cstdlib>  // Para el comando clear
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <random>
 #include <sstream>
 
+#include "ANSI-color-codes.hpp"  // Colores
 #include "tools.hpp"
+
+// Mapa de colores (dark, red, green, yellow, blue, purple, cyan, white)
+std::map<char, std::string> colorMap{{'d', BLK}, {'r', RED}, {'g', GRN},
+                                     {'y', YEL}, {'b', BLU}, {'m', MAG},
+                                     {'c', CYN}, {'w', WHT}};
 
 // Constructor
 Story::Story(const std::string& filename) { loadStory(filename); }
@@ -17,9 +24,9 @@ Story::Story(const std::string& filename) { loadStory(filename); }
 void Story::loadStory(const std::string& filename) {
   std::ifstream file(filename);
   int sceneIDCount{1};
-  // Carácter por el que filtar en los txt
-  const char kCharToFilter{'.'};
-
+  // Comienza la linea en txt desde el '.' es decir 2 carácter
+  const int kStartLinePos{2};
+  // Abrir archivo
   if (!file.is_open()) {
     std::cerr << "Error al abrir el archivo " << filename << ".\n";
     return;
@@ -31,7 +38,7 @@ void Story::loadStory(const std::string& filename) {
   while (std::getline(file, line)) {
     switch (line[0]) {
       case 'T':  // Comienza con 'T', es el título de la historia
-        title = line.substr(line.find(kCharToFilter) + 1);
+        title = line.substr(kStartLinePos);
         continue;
 
       case 'E': {  // Comienza con 'E', es una nueva escena
@@ -41,20 +48,27 @@ void Story::loadStory(const std::string& filename) {
         // Crea la nueva escena y la agrega al vector
         Scene newScene;
         newScene.id = id;
-        newScene.intro = line.substr(line.find(kCharToFilter) + 1);
+        newScene.intro = line.substr(2);
         currentSceneIndex = scenes.size();
         scenes.push_back(newScene);
         continue;
       }
 
+      case 'A': {  // Pixel Art
+        std::string str{line.substr(kStartLinePos)};
+        std::vector<char> row;
+        for (char c : str) row.push_back(c);
+        scenes[currentSceneIndex].pixelArt.push_back(row);
+        continue;
+      }
+
       case '+': {  // Opciones '+' correcta
         Option newOption;
-        newOption.text = line.substr(line.find(kCharToFilter) + 1);
+        newOption.text = line.substr(kStartLinePos);
         // Valor de la siguiente escena es  tamaño scenes + line[1]
         if (line[1] != '.') {
           newOption.nextScene =
-              std::stoi(line.substr(0, line.find(kCharToFilter))) +
-              scenes.size();
+              std::stoi(line.substr(0, kStartLinePos - 1)) + scenes.size();
           // Valor de siguiente escena es tamaño scenes + 1
         } else {
           newOption.nextScene = int(scenes.size() + 1);
@@ -65,12 +79,11 @@ void Story::loadStory(const std::string& filename) {
 
       case '-': {  // Opcion '-' incorrecta
         Option newOption;
-        newOption.text = line.substr(line.find(kCharToFilter) + 1);
+        newOption.text = line.substr(kStartLinePos);
         // Valor de la siguiente escena es  tamaño scenes + line[1]
         if (line[1] != '.') {
           newOption.nextScene =
-              std::stoi(line.substr(0, line.find(kCharToFilter))) +
-              scenes.size();
+              std::stoi(line.substr(0, kStartLinePos - 1)) + scenes.size();
           // Valor de siguiente escena es tamaño scenes - 1
         } else {
           newOption.nextScene = int(scenes.size() - 1);
@@ -80,7 +93,7 @@ void Story::loadStory(const std::string& filename) {
       }
 
       case 'F':  // Comienza con 'F', es el final de la historia
-        end_title = line.substr(line.find(kCharToFilter) + 1);
+        endTitle = line.substr(kStartLinePos);
         scenes[currentSceneIndex].options.back().nextScene = -1;
         continue;
 
@@ -98,6 +111,23 @@ auto vectorShuffle(std::vector<Option>& vector) {
   std::shuffle(vector.begin(), vector.end(), g);
 }
 
+// Imprime el pixel art con los colores asignados
+void Story::displayPixelArt(const Scene& scene) {
+  for (const auto& row : scene.pixelArt) {
+    for (char c : row) {
+      auto it = colorMap.find(c);
+      if (it != colorMap.end()) {
+        // Aplica el color correspondiente al carácter "█"
+        std::cout << it->second << "█" << CRESET;
+      } else {
+        // Imprime espacios ' '
+        std::cout << ' ';
+      }
+    }
+    std::cout << std::endl;
+  }
+}
+
 // Imprime las opciones
 void Story::displayOptions(const Scene& scene) {
   for (size_t i{0}; i < scene.options.size(); ++i) {
@@ -111,7 +141,9 @@ void Story::displayScene(const Scene& scene, const int& kLastScene) {
   // Imprime Escena id y la descripción
   std::cout << "* " << title << " : Escena [" << scene.id << "-" << kLastScene
             << "] *\n\n";
-  std::cout << scene.intro << "\n\n";
+  // Imprime el pixel art
+  displayPixelArt(scene);
+  std::cout << "\n" << scene.intro << "\n\n";
 }
 
 // Para saber que opcion elige el jugador
@@ -154,6 +186,6 @@ void Story::run() {
   }
   clearScreen();
   // Muestra el mensaje de finalización
-  std::cout << end_title << "\n\n";
+  std::cout << endTitle << "\n\n";
   pressEnter();
 }
