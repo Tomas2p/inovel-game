@@ -83,16 +83,28 @@ Para el pixelart comentado anteriormente con la opción 'A' tienes diponibles lo
 
 ### Ejecución con pixelart
 
-En el ejecutable se sustituye cada letra del pixelart por este carácter '█' y el color que representa la letra asignada.
+El cargar_el_movil.txt de esa escena es el siguiente
+
+    E.Necesitas cargar el móvil con el cargador.
+    A.wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+    A.ww                                 ww
+    A.ww    ccc                          ww
+    A.ww   cccccr       ggg             yww
+    A.ww    c c         www        wwwwwwww
+    A.wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+    +.Coger el cargador.
+    -.Jugar al minecraft.
+
+Este markdown no es compatile, pero el pixelart se ve con los colores designados, en vez de el carácter '█' en blanco.
 
     * La Carga del Móvil : Escena [1-3] *
 
-    wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-    ww                                 ww
-    ww    ccc                          ww
-    ww   cccccr       ggg             yww
-    ww    c c         www        wwwwwwww
-    wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+    █████████████████████████████████████
+    ██                                 ██
+    ██    ███                          ██
+    ██   ██████       ███             ███
+    ██    █ █         ███        ████████
+    █████████████████████████████████████
 
     Necesitas cargar el móvil con el cargador.
 
