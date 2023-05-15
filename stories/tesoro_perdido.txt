@@ -30,7 +30,7 @@ E.Superas las trampas y encuentras una gran puerta de piedra.
 -2.Llamar a la puerta.
 
 E.El medallón funciona se abre la puerta se abre y revela un tesoro brillante en su interior.
--6.Dejar el tesoro y explorar más a fondo la cueva.
+-.Dejar el tesoro y explorar más a fondo la cueva.
 
 E.La puerta se abre sorpendentemente y ves un bosque.
 +.Salir al bosque.

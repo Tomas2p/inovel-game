@@ -24,8 +24,6 @@ Story::Story(const std::string& filename) { loadStory(filename); }
 void Story::loadStory(const std::string& filename) {
   std::ifstream file(filename);
   int sceneIDCount{1};
-  // Comienza la linea en txt desde el '.' es decir 2 carácter
-  const int kStartLinePos{2};
   // Abrir archivo
   if (!file.is_open()) {
     std::cerr << "Error al abrir el archivo " << filename << ".\n";
@@ -36,9 +34,12 @@ void Story::loadStory(const std::string& filename) {
   int currentSceneIndex{-1};
 
   while (std::getline(file, line)) {
+    // Encuentra la posicion de '.' en la linea de texto
+    int posChar{int(line.find_first_of('.')) + 1};
+
     switch (line[0]) {
       case 'T':  // Comienza con 'T', es el título de la historia
-        title = line.substr(kStartLinePos);
+        title = line.substr(posChar);
         continue;
 
       case 'E': {  // Comienza con 'E', es una nueva escena
@@ -48,14 +49,14 @@ void Story::loadStory(const std::string& filename) {
         // Crea la nueva escena y la agrega al vector
         Scene newScene;
         newScene.id = id;
-        newScene.intro = line.substr(2);
+        newScene.intro = line.substr(posChar);
         currentSceneIndex = scenes.size();
         scenes.push_back(newScene);
         continue;
       }
 
       case 'A': {  // Pixel Art
-        std::string str{line.substr(kStartLinePos)};
+        std::string str{line.substr(posChar)};
         std::vector<char> row;
         for (char c : str) row.push_back(c);
         scenes[currentSceneIndex].pixelArt.push_back(row);
@@ -64,13 +65,12 @@ void Story::loadStory(const std::string& filename) {
 
       case '+': {  // Opciones '+' correcta
         Option newOption;
-        newOption.text = line.substr(kStartLinePos);
-        // Valor de la siguiente escena es  tamaño scenes + line[1]
+        newOption.text = line.substr(posChar);
         if (line[1] != '.') {
-          newOption.nextScene =
-              std::stoi(line.substr(0, kStartLinePos - 1)) + scenes.size();
-          // Valor de siguiente escena es tamaño scenes + 1
+          // Valor de la siguiente escena es tamaño scenes + line[1]
+          newOption.nextScene = scenes.size() + std::stoi(line.substr(1, 2));
         } else {
+          // Valor de siguiente escena es tamaño scenes + 1
           newOption.nextScene = int(scenes.size() + 1);
         }
         scenes[currentSceneIndex].options.push_back(newOption);
@@ -79,13 +79,12 @@ void Story::loadStory(const std::string& filename) {
 
       case '-': {  // Opcion '-' incorrecta
         Option newOption;
-        newOption.text = line.substr(kStartLinePos);
-        // Valor de la siguiente escena es  tamaño scenes + line[1]
+        newOption.text = line.substr(posChar);
         if (line[1] != '.') {
-          newOption.nextScene =
-              std::stoi(line.substr(0, kStartLinePos - 1)) + scenes.size();
-          // Valor de siguiente escena es tamaño scenes - 1
+          // Valor de la siguiente escena es tamaño scenes - line[1]
+          newOption.nextScene = scenes.size() - std::stoi(line.substr(1, 2));
         } else {
+          // Valor de siguiente escena es tamaño scenes - 1
           newOption.nextScene = int(scenes.size() - 1);
         }
         scenes[currentSceneIndex].options.push_back(newOption);
@@ -93,7 +92,7 @@ void Story::loadStory(const std::string& filename) {
       }
 
       case 'F':  // Comienza con 'F', es el final de la historia
-        endTitle = line.substr(kStartLinePos);
+        endTitle = line.substr(posChar);
         scenes[currentSceneIndex].options.back().nextScene = -1;
         continue;
 
