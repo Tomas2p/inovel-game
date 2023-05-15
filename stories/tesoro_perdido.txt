@@ -1,23 +1,39 @@
 T.El Tesoro Perdido
 
 E.Te encuentras en una antigua cueva oscura.
-+2.Explorar la cueva en busca de pistas.
++.Explorar la cueva en busca de pistas.
++2.Irte de ruta por ahí.
 -.Regresar a la entrada de la cueva.
 
 E.Descubres una antigua inscripción en la pared.
-+.Decodificar la inscripción y seguir las indicaciones.
++2.Decodificar la inscripción y seguir las indicaciones.
+-.Destrozar la inscripción.
 -.Investigar otra área de la cueva.
 
-E.Siguiendo las indicaciones, llegas a una sala llena de trampas mortales.
-+.Desactivar las trampas con cuidado.
--.Evitar las trampas y continuar sin tocar nada.
+E.Explorando encuentras un medallón mágico.
++.Al bolsillo.
++2.Leer en voz alto las inscripciones de este.
+-2.Romper el medallón.
+
+E.Siguiendo las indicaciones de la pared, llegas a una sala llena de trampas mortales.
++2.Desactivar las trampas con cuidado.
+-2.Evitar las trampas y continuar sin tocar nada.
+-3.Tirarte a las trampas.
+
+E.Encuentras una gran puerta de Oro.
++2.Abrir la puerta utilizando el medallón mágico.
+-2.Llamar a la puerta.
+-2.Forzar la puerta.
 
 E.Superas las trampas y encuentras una gran puerta de piedra.
-+.Abrir la puerta utilizando el medallón mágico.
--.Buscar otra forma de abrir la puerta.
++2.Empujar la puerta.
+-2.Llamar a la puerta.
 
-E.La puerta se abre y revela un tesoro brillante en su interior.
-+.Tomar el tesoro y salir de la cueva victorioso.
--.Dejar el tesoro y explorar más a fondo la cueva.
+E.El medallón funciona se abre la puerta se abre y revela un tesoro brillante en su interior.
+-6.Dejar el tesoro y explorar más a fondo la cueva.
+
+E.La puerta se abre sorpendentemente y ves un bosque.
++.Salir al bosque.
++.Genial, ¿Ahora te toca explorar un bosque?
 
 F.Has terminado tu búsqueda del Tesoro Perdido. ¡Espero que hayas disfrutado!

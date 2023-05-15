@@ -1,7 +1,0 @@
-T:Título de la Historia
-
-E1:Texto escena 1
-+Opción 1
--Opción 2
-
-F:Final de la historia
