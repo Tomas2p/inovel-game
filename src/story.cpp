@@ -44,9 +44,10 @@ void Story::loadStory(const std::string& filename) {
     if (line.empty() || line[0] == kCommentPrefix) continue;
 
     switch (line[0]) {
-      case 'T':  // Comienza con 'T', es el titulo de la historia
+      case 'T': {  // Comienza con 'T', es el titulo de la historia
         title = line.substr(kPosOfCharToFilter);
         continue;
+      }
 
       case 'E': {  // Comienza con 'E', es una nueva escena
         // Extrae el identificador de la escena
@@ -80,10 +81,11 @@ void Story::loadStory(const std::string& filename) {
         continue;
       }
 
-      case 'F':  // Comienza con 'F', es el final de la historia
+      case 'F': {  // Comienza con 'F', es el final de la historia
         endTitle = line.substr(kPosOfCharToFilter);
         scenes[currentSceneIndex].options.back().nextScene = -1;
         continue;
+      }
 
       default:  // Ignora las líneas vacías, los comentarios y el resto
         break;
@@ -105,10 +107,11 @@ void Story::displayPixelArt(const Scene& scene) {
     for (char c : row) {
       auto it = colorMap.find(c);
       // Imprime el caracter correspondiente o espacio
-      !ispunct(int(c))
-          ? (it != colorMap.end() ? (std::cout << it->second + '#' + CRESET)
-                                  : (std::cout << ' '))
-          : (std::cout << c);
+      // !ispunct(int(c))
+      //     ? (it != colorMap.end() ? (std::cout << it->second + '#' + CRESET)
+      //                             : (std::cout << ' '))
+      //     : (std::cout << c);
+      std::cout << c;
     }
     std::cout << std::endl;
   }
@@ -170,7 +173,7 @@ void Story::run() {
     // Busca la siguiente escena por su identificador
     auto it{find_if(scenes.begin(), scenes.end(),
                     [nextScene](const Scene& s) { return s.id == nextScene; })};
-    // Pasa a la siguiente escena o al final de la historia
+    // Pasa a la siguiente escena o alfinal de la historia
     it != scenes.end() ? (currentScene = distance(scenes.begin(), it))
                        : (currentScene = -1);
   }
