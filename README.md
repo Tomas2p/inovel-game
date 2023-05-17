@@ -101,12 +101,12 @@ Este markdown no es compatile, pero el pixelart se ve con los colores designados
 
     * La Carga del Móvil : Escena [1-3] *
 
-    █████████████████████████████████████
-    ██                                 ██
-    ██    ███                          ██
-    ██   ██████       ███             ███
-    ██    █ █         ███        ████████
-    █████████████████████████████████████
+    #####################################
+    ##                                 ##
+    ##    ###                          ##
+    ##   ######       ###             ###
+    ##    # #         ###        ########
+    #####################################
 
     Necesitas cargar el móvil con el cargador.
 
