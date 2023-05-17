@@ -43,6 +43,7 @@ Con el objetivo en mente de que las historias puedan ser creadas por otros usuar
     T.Título de la Historia
 
     E.Texto escena 1
+    #Comentario
     A.drgybmcw
     +.Avanza 1 escena
     -.Retrocede 1 escena
@@ -57,6 +58,7 @@ Donde las cosas funcionan de la siguiente manera:
 | :---------: | :-------------------: |
 |      T      | Título de la historia |
 |      E      |        Escena         |
+|      #      |      Comentario       |
 |      A      |       PixelArt        |
 |      +      |    Avanza 1 escena    |
 |     +n      |   Avanza n escenas    |
@@ -64,7 +66,7 @@ Donde las cosas funcionan de la siguiente manera:
 |     -n      |  Retrocede n escenas  |
 |      F      | Final de la historia  |
 
-Cualquier otro caracter que empieze la linea es ignorado, los '.' sirven para separar el texto de las abreviaturas.
+Las lineas vacias y los comentarios son ignorados, los '.' sirven para separar el texto de las abreviaturas.
 
 ### PixelArt
 

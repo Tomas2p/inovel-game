@@ -27,6 +27,10 @@ class Story {
   int getPlayerChoice(int maxOptions);
   // Imprime el pixel art con los colores asignados
   void displayPixelArt(const Scene& scene);
+  // Usa ncurses para mostrar las escenas
+  void displayScreen(const Scene& scene);
+  // Obtiene el tamaño maximo vertical del pixelart
+  int getPixelArtWidth(const Scene& scene);
 
   // Título y título final
   std::string title, endTitle;

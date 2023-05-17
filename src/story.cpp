@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cstdlib>  // Para el comando clear
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <map>
 #include <random>
@@ -22,82 +23,70 @@ Story::Story(const std::string& filename) { loadStory(filename); }
 
 // Carga la historia desde el archivo dado
 void Story::loadStory(const std::string& filename) {
+  // Inicializacion de variables
   std::ifstream file(filename);
   int sceneIDCount{1};
+  std::string line;
+  int currentSceneIndex{-1};
+  const char kCommentPrefix{'#'};
+
   // Abrir archivo
   if (!file.is_open()) {
     std::cerr << "Error al abrir el archivo " << filename << ".\n";
     return;
   }
 
-  std::string line;
-  int currentSceneIndex{-1};
-
   while (std::getline(file, line)) {
     // Encuentra la posicion de '.' en la linea de texto
-    int posChar{int(line.find_first_of('.')) + 1};
+    const int kPosOfCharToFilter{int(line.find_first_of('.')) + 1};
+
+    // Ignorar lineas vacías o de comentarios
+    if (line.empty() || line[0] == kCommentPrefix) continue;
 
     switch (line[0]) {
-      case 'T':  // Comienza con 'T', es el título de la historia
-        title = line.substr(posChar);
+      case 'T':  // Comienza con 'T', es el titulo de la historia
+        title = line.substr(kPosOfCharToFilter);
         continue;
 
       case 'E': {  // Comienza con 'E', es una nueva escena
         // Extrae el identificador de la escena
-        int id{sceneIDCount};
-        ++sceneIDCount;
+        int id{sceneIDCount++};
         // Crea la nueva escena y la agrega al vector
-        Scene newScene;
-        newScene.id = id;
-        newScene.intro = line.substr(posChar);
+        Scene newScene{id, line.substr(kPosOfCharToFilter)};
         currentSceneIndex = scenes.size();
         scenes.push_back(newScene);
         continue;
       }
 
       case 'A': {  // Pixel Art
-        std::string str{line.substr(posChar)};
-        std::vector<char> row;
-        for (char c : str) row.push_back(c);
-        scenes[currentSceneIndex].pixelArt.push_back(row);
+        std::string str{line.substr(kPosOfCharToFilter)};
+        scenes[currentSceneIndex].pixelArt.emplace_back(str.begin(), str.end());
         continue;
       }
 
-      case '+': {  // Opciones '+' correcta
+      case '+':    // Opcion '+' avanza escena
+      case '-': {  // Opcion '-' retrocede escena
         Option newOption;
-        newOption.text = line.substr(posChar);
-        if (line[1] != '.') {
-          // Valor de la siguiente escena es tamaño scenes + line[1]
-          newOption.nextScene = scenes.size() + std::stoi(line.substr(1, 2));
-        } else {
-          // Valor de siguiente escena es tamaño scenes + 1
-          newOption.nextScene = int(scenes.size() + 1);
-        }
-        scenes[currentSceneIndex].options.push_back(newOption);
-        continue;
-      }
-
-      case '-': {  // Opcion '-' incorrecta
-        Option newOption;
-        newOption.text = line.substr(posChar);
+        newOption.text = line.substr(kPosOfCharToFilter);
         if (line[1] != '.') {
           // Valor de la siguiente escena es tamaño scenes - line[1]
-          newOption.nextScene = scenes.size() - std::stoi(line.substr(1, 2));
+          newOption.nextScene =
+              scenes.size() + std::stoi(line.substr(0, kPosOfCharToFilter - 1));
         } else {
           // Valor de siguiente escena es tamaño scenes - 1
-          newOption.nextScene = int(scenes.size() - 1);
+          newOption.nextScene = int(scenes.size() + (line[0] == '+' ? 1 : -1));
         }
         scenes[currentSceneIndex].options.push_back(newOption);
         continue;
       }
 
       case 'F':  // Comienza con 'F', es el final de la historia
-        endTitle = line.substr(posChar);
+        endTitle = line.substr(kPosOfCharToFilter);
         scenes[currentSceneIndex].options.back().nextScene = -1;
         continue;
 
       default:  // Ignora las líneas vacías, los comentarios y el resto
-        continue;
+        break;
     }
   }
   file.close();
@@ -115,13 +104,11 @@ void Story::displayPixelArt(const Scene& scene) {
   for (const auto& row : scene.pixelArt) {
     for (char c : row) {
       auto it = colorMap.find(c);
-      if (it != colorMap.end()) {
-        // Aplica el color correspondiente al carácter "█"
-        std::cout << it->second << "█" << CRESET;
-      } else {
-        // Imprime espacios ' '
-        std::cout << ' ';
-      }
+      // Imprime el caracter correspondiente o espacio
+      !ispunct(int(c))
+          ? (it != colorMap.end() ? (std::cout << it->second + '#' + CRESET)
+                                  : (std::cout << ' '))
+          : (std::cout << c);
     }
     std::cout << std::endl;
   }
@@ -137,18 +124,32 @@ void Story::displayOptions(const Scene& scene) {
 // Muestra la escena y opciones
 void Story::displayScene(const Scene& scene, const int& kLastScene) {
   clearScreen();
-  // Imprime Escena id y la descripción
+  // Imprime Escena id y el titulo de la historia
   std::cout << "* " << title << " : Escena [" << scene.id << "-" << kLastScene
             << "] *\n\n";
+
   // Imprime el pixel art
   displayPixelArt(scene);
-  std::cout << "\n" << scene.intro << "\n\n";
+
+  // Imprime la descripcion de la escena
+  std::cout << "\n" << scene.intro << "\n";
+
+  // Imprime las opciones
+  displayOptions(scene);
+}
+
+// Obtiene el tamaño maximo vertical del pixelart
+int Story::getPixelArtWidth(const Scene& scene) {
+  int maxWidth{0};
+  for (int i{0}; i < int(scene.pixelArt.size()); ++i)
+    maxWidth += scene.pixelArt[i].size();
+  return maxWidth / int(scene.pixelArt.size());
 }
 
 // Para saber que opcion elige el jugador
 int Story::getPlayerChoice(int maxOptions) {
   int playerChoice;
-  std::cout << "\nElige una opción [1-" << maxOptions << "] >>> ";
+  std::cout << "Elige una opción [1-" << maxOptions << "] >>> ";
   std::cin >> playerChoice;
   return playerChoice - 1;
 }
@@ -158,30 +159,20 @@ void Story::run() {
   int currentScene{0}, kScenesCount{int(scenes.size())};
   clearScreen();
   while (currentScene >= 0 && currentScene < kScenesCount) {
-    // Imprime las escenas
-    displayScene(scenes[currentScene], kScenesCount);
-
     // Mezcla las opciones de las escenas
     vectorShuffle(scenes[currentScene].options);
-
-    // Imprime las opciones de las escenas
-    displayOptions(scenes[currentScene]);
-
-    // Asigna e choice la opción elegida por el jugador
+    // Imprime las escenas
+    displayScene(scenes[currentScene], kScenesCount);
+    // Asigna a choice la opción elegida por el jugador
     int choice{getPlayerChoice(scenes[currentScene].options.size())};
-
     // Asigna a nextScene la siguiente escena
     int nextScene{scenes[currentScene].options[choice].nextScene};
-
     // Busca la siguiente escena por su identificador
     auto it{find_if(scenes.begin(), scenes.end(),
                     [nextScene](const Scene& s) { return s.id == nextScene; })};
-
-    if (it != scenes.end()) {  // Calcula el índice de la siguiente escena
-      currentScene = distance(scenes.begin(), it);
-    } else {  // Final de la historia
-      currentScene = -1;
-    }
+    // Pasa a la siguiente escena o al final de la historia
+    it != scenes.end() ? (currentScene = distance(scenes.begin(), it))
+                       : (currentScene = -1);
   }
   clearScreen();
   // Muestra el mensaje de finalización
