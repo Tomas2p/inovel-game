@@ -65,9 +65,9 @@ Y este sería el archivo del pixelart:
 
 Donde las cosas funcionan de la siguiente manera:
 
-|                                 .txt|       .art|
-| Abreviatura |      Explicación      | Abreviatura |     Explicación     |
+|   En TXT    |        En TXT         |   En ART    |       En ART        |
 | :---------: | :-------------------: | :---------: | :-----------------: |
+| Abreviatura |      Explicación      | Abreviatura |     Explicación     |
 |      T      | Título de la historia |      #      |     Comentarios     |
 |      E      |        Escena         |      A      | nombre del pixelart |
 |      #      |      Comentario       |
