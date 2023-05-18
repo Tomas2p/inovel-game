@@ -38,13 +38,13 @@ Requisitos: `make` y `g++`
 
 ## Plantilla de historia
 
-Con el objetivo en mente de que las historias puedan ser creadas por otros usuarios les ofrezco la plantilla que se encuentra en stories/story_template.txt
+Con el objetivo en mente de que las historias puedan ser creadas por otros usuarios les ofrezco la plantilla que se encuentra en stories/template/story_template.txt y su pixelart se encontraría en stories/template/story_template.art:
 
     T.Título de la Historia
 
     E.Texto escena 1
     #Comentario
-    A.drgybmcw
+    A.Escena1
     +.Avanza 1 escena
     -.Retrocede 1 escena
     +2.Avanza 2 escenas
@@ -52,14 +52,26 @@ Con el objetivo en mente de que las historias puedan ser creadas por otros usuar
 
     F.Final de la historia
 
+Y este sería el archivo del pixelart:
+
+    #PixelArt de la historia
+
+    A.Escena1
+    adwdfsdd
+    qwdqwdqw
+    dqwdwddw
+
+    A.Escena2
+
 Donde las cosas funcionan de la siguiente manera:
 
-| Abreviatura |      Explicación      |
-| :---------: | :-------------------: |
-|      T      | Título de la historia |
-|      E      |        Escena         |
+|                                 .txt|       .art|
+| Abreviatura |      Explicación      | Abreviatura |     Explicación     |
+| :---------: | :-------------------: | :---------: | :-----------------: |
+|      T      | Título de la historia |      #      |     Comentarios     |
+|      E      |        Escena         |      A      | nombre del pixelart |
 |      #      |      Comentario       |
-|      A      |       PixelArt        |
+|      A      |  Titulo del pixelart  |
 |      +      |    Avanza 1 escena    |
 |     +n      |   Avanza n escenas    |
 |      -      |  Retrocede 1 escena   |
@@ -68,7 +80,9 @@ Donde las cosas funcionan de la siguiente manera:
 
 Las lineas vacias y los comentarios son ignorados, los '.' sirven para separar el texto de las abreviaturas.
 
-### PixelArt
+### PixelArt NO FUNCIONAL
+
+Actualmente no funcionan los colores.
 
 Para el pixelart comentado anteriormente con la opción 'A' tienes diponibles los siguientes colores en formato ANSI, si no los puedes ver quizás esa terminal no sea compatible.
 
@@ -85,32 +99,35 @@ Para el pixelart comentado anteriormente con la opción 'A' tienes diponibles lo
 
 ### Ejecución con pixelart
 
-El cargar_el_movil.txt de esa escena es el siguiente
+El cargar_el_movil.txt de esa escena es el siguiente:
 
     E.Necesitas cargar el móvil con el cargador.
-    A.wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-    A.ww                                 ww
-    A.ww    ccc                          ww
-    A.ww   cccccr       ggg             yww
-    A.ww    c c         www        wwwwwwww
-    A.wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+    A.Escena1
     +.Coger el cargador.
     -.Jugar al minecraft.
 
-Este markdown no es compatile, pero el pixelart se ve con los colores designados, en vez de el carácter '█' en blanco.
+El cargar_el_movil.art de esa escena es:
+
+    A.Escena1
+    wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+    ww                                 ww
+    ww    ccc                          ww
+    ww   cccccr       ggg             yww
+    ww    c c         www        wwwwwwww
+    wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+
+Y se vería lo siguiente:
 
     * La Carga del Móvil : Escena [1-3] *
 
-    #####################################
-    ##                                 ##
-    ##    ###                          ##
-    ##   ######       ###             ###
-    ##    # #         ###        ########
-    #####################################
+     wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+     ww                                 ww
+     ww    ccc                          ww
+     ww   cccccr       ggg             yww
+     ww    c c         www        wwwwwwww
+     wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
 
     Necesitas cargar el móvil con el cargador.
-
-    [1] - Coger el cargador.
-    [2] - Jugar al minecraft.
-
+     [1] - Coger el cargador.
+     [2] - Jugar al minecraft.
     Elige una opción [1-2] >>> 
