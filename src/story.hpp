@@ -8,6 +8,8 @@
 // #include "pixelart.hpp"
 #include "scene.hpp"
 
+using pixelArt = std::vector<std::vector<char>>;
+
 // Clase para gestionar la historia
 class Story {
  public:
@@ -19,6 +21,9 @@ class Story {
  private:
   // Cargar la historia
   void loadStory(const std::string& filename);
+  // Carga el pixelart desde el archivo dado
+  pixelArt loadPixelArtFromFile(
+      const std::string& filename, const std::string& word);
   // Mostrar la escena
   void displayScene(const Scene& scene, const int& kLastScene);
   // Imprime las opciones

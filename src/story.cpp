@@ -24,7 +24,7 @@ Story::Story(const std::string& filename) { loadStory(filename); }
 // Carga la historia desde el archivo dado
 void Story::loadStory(const std::string& filename) {
   // Inicializacion de variables
-  std::ifstream file(filename);
+  std::ifstream file(filename + ".txt");
   int sceneIDCount{1};
   std::string line;
   int currentSceneIndex{-1};
@@ -32,13 +32,13 @@ void Story::loadStory(const std::string& filename) {
 
   // Abrir archivo
   if (!file.is_open()) {
-    std::cerr << "Error al abrir el archivo " << filename << ".\n";
+    std::cerr << "Error al abrir el archivo " << filename << ".txt.\n";
     return;
   }
 
   while (std::getline(file, line)) {
     // Encuentra la posicion de '.' en la linea de texto
-    const int kPosOfCharToFilter{int(line.find_first_of('.')) + 1};
+    const int kPosOfCharToFilter{static_cast<int>(line.find_first_of('.')) + 1};
 
     // Ignorar lineas vacías o de comentarios
     if (line.empty() || line[0] == kCommentPrefix) continue;
@@ -46,7 +46,7 @@ void Story::loadStory(const std::string& filename) {
     switch (line[0]) {
       case 'T': {  // Comienza con 'T', es el titulo de la historia
         title = line.substr(kPosOfCharToFilter);
-        continue;
+        break;
       }
 
       case 'E': {  // Comienza con 'E', es una nueva escena
@@ -55,14 +55,15 @@ void Story::loadStory(const std::string& filename) {
         // Crea la nueva escena y la agrega al vector
         Scene newScene{id, line.substr(kPosOfCharToFilter)};
         currentSceneIndex = scenes.size();
-        scenes.push_back(newScene);
-        continue;
+        scenes.emplace_back(newScene);
+        break;
       }
 
       case 'A': {  // Pixel Art
-        std::string str{line.substr(kPosOfCharToFilter)};
-        scenes[currentSceneIndex].pixelArt.emplace_back(str.begin(), str.end());
-        continue;
+        std::string word = line.substr(kPosOfCharToFilter);
+        scenes[currentSceneIndex].pixelArt =
+            loadPixelArtFromFile(filename, word);
+        break;
       }
 
       case '+':    // Opcion '+' avanza escena
@@ -72,19 +73,21 @@ void Story::loadStory(const std::string& filename) {
         if (line[1] != '.') {
           // Valor de la siguiente escena es tamaño scenes - line[1]
           newOption.nextScene =
-              scenes.size() + std::stoi(line.substr(0, kPosOfCharToFilter - 1));
+              static_cast<int>(scenes.size() + std::stoi(line.substr(
+                                                   0, kPosOfCharToFilter - 1)));
         } else {
           // Valor de siguiente escena es tamaño scenes - 1
-          newOption.nextScene = int(scenes.size() + (line[0] == '+' ? 1 : -1));
+          newOption.nextScene =
+              static_cast<int>(scenes.size() + (line[0] == '+' ? 1 : -1));
         }
-        scenes[currentSceneIndex].options.push_back(newOption);
-        continue;
+        scenes[currentSceneIndex].options.emplace_back(newOption);
+        break;
       }
 
       case 'F': {  // Comienza con 'F', es el final de la historia
         endTitle = line.substr(kPosOfCharToFilter);
         scenes[currentSceneIndex].options.back().nextScene = -1;
-        continue;
+        break;
       }
 
       default:  // Ignora las líneas vacías, los comentarios y el resto
@@ -92,6 +95,39 @@ void Story::loadStory(const std::string& filename) {
     }
   }
   file.close();
+}
+
+// Carga el pixelart desde el archivo dado
+pixelArt Story::loadPixelArtFromFile(
+    const std::string& filename, const std::string& word) {
+  pixelArt pixelArt;
+  std::ifstream artFile(filename + ".art");
+  if (!artFile.is_open()) {
+    std::cerr << "Error al abrir el archivo " << filename + ".art.\n";
+    return pixelArt;
+  }
+  std::string line;
+  bool foundWord{false}, searchArt{false};
+  while (std::getline(artFile, line)) {
+    // Ignorar líneas vacías o de comentarios
+    if (line.empty() || line[0] == '#') continue;
+    // Encontró la línea A indicando el comienzo del arte
+    if (line.substr(0, 2) == "A.") {
+      if (line.substr(2) == word)
+        foundWord = true, searchArt = true;
+      else
+        searchArt = false;
+      continue;
+    }
+    if (searchArt) pixelArt.emplace_back(line.begin(), line.end());
+  }
+  artFile.close();
+  if (!foundWord) {
+    std::cerr << "No se encontró el arte para la palabra \"" << word
+              << "\" en el archivo " << filename + ".art"
+              << ".\n";
+  }
+  return pixelArt;
 }
 
 // Mezcla el vector dado
@@ -105,7 +141,7 @@ auto vectorShuffle(std::vector<Option>& vector) {
 void Story::displayPixelArt(const Scene& scene) {
   for (const auto& row : scene.pixelArt) {
     for (char c : row) {
-      auto it = colorMap.find(c);
+      // auto it = colorMap.find(c);
       // Imprime el caracter correspondiente o espacio
       // !ispunct(int(c))
       //     ? (it != colorMap.end() ? (std::cout << it->second + '#' + CRESET)

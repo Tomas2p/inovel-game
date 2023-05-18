@@ -1,0 +1,19 @@
+T.La Carga del Móvil
+#PixelArt en carga_el_movil.art
+
+E.Necesitas cargar el móvil con el cargador.
+A.Escena1
++.Coger el cargador.
+-.Jugar al minecraft.
+
+E.Conecta el móvil.
+A.Escena2
++.Conectar a la pared.
+-.Conectar a un reactor nuclear.
+
+E.¡El móvil se está cargando!
+A.Escena3
++.Observar el porcentaje de carga.
+-.Desconectar el móvil y comerte unos nuggets.
+
+F.Gracias a alguien tu móvil no ha explotado o si.
